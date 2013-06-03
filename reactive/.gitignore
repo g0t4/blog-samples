@@ -1,0 +1,29 @@
+# Builds
+[Dd]ebug/
+[Rr]elease/
+x64/
+build/
+[Bb]in/
+[Oo]bj/
+
+# nuget
+[Pp]ackages/
+# R#
+_ReSharper*/
+# User level settings
+*.suo
+*.user
+# Binaries
+*.exe
+*.dll
+# Webstorm / nodejs
+.settings/
+local.properties
+tasks.xml
+workspace.xml
+node_modules/
+npm-debug.log
+/TestResult.xml
+
+Thumbs.db
+*.log
