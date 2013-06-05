@@ -24,8 +24,7 @@
         private void OnQuote(object sender, FuturesQuote quote)
         {
             var contract = ContractFromQuote(quote);
-            var isValidContract = contract == null;
-            if (isValidContract)
+            if (IsValidContract(contract))
             {
                 return;
             }
@@ -35,10 +34,15 @@
                 return;
             }
             activeBarrierOptionsForContract
-                .Where(option => BarrierCrossed(option, quote))
+                .Where(option => BarrierIsBreached(option, quote))
                 .Where(NoticeNotAlreadySent)
                 .ToList()
                 .ForEach(option => NotifyTheHumans(option, quote));
+        }
+
+        private static bool IsValidContract(CommodityContract contract)
+        {
+            return contract == null;
         }
 
         public static IDictionary<string, int> Months = new Dictionary<string, int>
@@ -78,7 +82,7 @@
             }
         }
 
-        private bool BarrierCrossed(CommodityBarrierOption option, FuturesQuote quote)
+        private bool BarrierIsBreached(CommodityBarrierOption option, FuturesQuote quote)
         {
             if (option.Barrier.Direction == BarrierDirection.Down)
             {

@@ -28,7 +28,7 @@
             FuturesQuotesSource(client)
                 .Select(q => new QuoteWithContract(q))
                 .Where(IsValidContract)
-                .SelectMany(BarrierEventNotices)
+                .SelectMany(BarrierBreachNotices)
                 .Where(NoticeNotAlreadySent)
                 .Subscribe(NotifyTheHumans);
         }
@@ -38,7 +38,7 @@
             return quote.Contract != null;
         }
 
-        private IEnumerable<BarrierEvent> BarrierEventNotices(QuoteWithContract quote)
+        private IEnumerable<BarrierEvent> BarrierBreachNotices(QuoteWithContract quote)
         {
             IEnumerable<CommodityBarrierOption> options;
             if (!_ActiveBarrierOptionsByContract.TryGetValue(quote.Contract, out options))
@@ -46,11 +46,11 @@
                 return Enumerable.Empty<BarrierEvent>();
             }
             return options
-                .Where(option => BarrierCrossed(option, quote.Quote))
+                .Where(option => BarrierIsBreached(option, quote.Quote))
                 .Select(option => CreateNotice(option, quote));
         }
 
-        private bool BarrierCrossed(CommodityBarrierOption option, FuturesQuote quote)
+        private bool BarrierIsBreached(CommodityBarrierOption option, FuturesQuote quote)
         {
             if (option.Barrier.Direction == BarrierDirection.Down)
             {
