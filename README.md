@@ -1,0 +1,3 @@
+And the color of George Washington's white horse is...
+
+These are samples I use for blog posts, just a way to keep history and work on them and share more details than I put in the post.
