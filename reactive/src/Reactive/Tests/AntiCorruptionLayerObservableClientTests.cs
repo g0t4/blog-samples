@@ -16,30 +16,30 @@
                     Symbol = "CZ2013"
                 };
             var scheduler = new TestScheduler();
-            var quotes = scheduler.CreateColdObservable(ReactiveTest.OnNext(0, validFuturesQuote));
-            var quotesWithContractClient = new AntiCorruptionLayerObservableClient(quotes);
+            var futuresQuotes = scheduler.CreateColdObservable(ReactiveTest.OnNext(0, validFuturesQuote));
+            var quotesWithContractClient = new AntiCorruptionLayerObservableClient(futuresQuotes);
 
-            var result = scheduler.Start(() => quotesWithContractClient.Quotes);
+            var quotesWithContracts = scheduler.Start(() => quotesWithContractClient.Quotes);
 
-            result.Messages.Should().HaveCount(1);
-            var quoteWithContract = result.Messages.Single().Value.Value;
+            quotesWithContracts.Messages.Should().HaveCount(1);
+            var quoteWithContract = quotesWithContracts.Messages.Single().Value.Value;
             quoteWithContract.Quote.ShouldBeEquivalentTo(validFuturesQuote);
         }
 
         [Test]
         public void OnFuturesQuote_WithAnInvalidContract_StreamsNothing()
         {
-            var validFuturesQuote = new FuturesQuote
+            var invalidFuturesQuote = new FuturesQuote
                 {
                     Symbol = "invalidcontract"
                 };
             var scheduler = new TestScheduler();
-            var quotes = scheduler.CreateColdObservable(ReactiveTest.OnNext(0, validFuturesQuote));
-            var quotesWithContractClient = new AntiCorruptionLayerObservableClient(quotes);
+            var futuresQuotes = scheduler.CreateColdObservable(ReactiveTest.OnNext(0, invalidFuturesQuote));
+            var quotesWithContractClient = new AntiCorruptionLayerObservableClient(futuresQuotes);
 
-            var result = scheduler.Start(() => quotesWithContractClient.Quotes);
+            var quotesWithContracts = scheduler.Start(() => quotesWithContractClient.Quotes);
 
-            result.Messages.Should().BeEmpty();
+            quotesWithContracts.Messages.Should().BeEmpty();
         }
     }
 }

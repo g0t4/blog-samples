@@ -5,6 +5,16 @@
     /// </summary>
     public class AntiCorruptionLayerEventClient
     {
+        public delegate void QuoteWithContractHandler(object sender, NotifyOnBarrierEventsReactive.QuoteWithContract args);
+
+        public event QuoteWithContractHandler Quotes;
+
+        protected virtual void OnQuotes(NotifyOnBarrierEventsReactive.QuoteWithContract quote)
+        {
+            var handler = Quotes;
+            if (handler != null) handler(this, quote);
+        }
+
         public AntiCorruptionLayerEventClient(IFuturesQuoteClient client)
         {
             client.Quotes += TransformToQuoteWithContract;
@@ -14,16 +24,6 @@
         private void TransformToQuoteWithContract(object sender, FuturesQuote quote)
         {
             OnQuotes(new NotifyOnBarrierEventsReactive.QuoteWithContract(quote));
-        }
-
-        public delegate void QuoteWithContractHandler(object sender, NotifyOnBarrierEventsReactive.QuoteWithContract args);
-
-        public event QuoteWithContractHandler Quotes;
-
-        protected virtual void OnQuotes(NotifyOnBarrierEventsReactive.QuoteWithContract quote)
-        {
-            var handler = Quotes;
-            if (handler != null) handler(this, quote);
         }
     }
 
