@@ -38,16 +38,16 @@
             return quote.Contract != null;
         }
 
-        private IEnumerable<BarrierEvent> BarrierBreachNotices(QuoteWithContract quote)
+        private IEnumerable<BarrierBreachNotice> BarrierBreachNotices(QuoteWithContract quote)
         {
             IEnumerable<CommodityBarrierOption> options;
             if (!_ActiveBarrierOptionsByContract.TryGetValue(quote.Contract, out options))
             {
-                return Enumerable.Empty<BarrierEvent>();
+                return Enumerable.Empty<BarrierBreachNotice>();
             }
             return options
                 .Where(option => BarrierIsBreached(option, quote.Quote))
-                .Select(option => CreateNotice(option, quote));
+                .Select(option => new BarrierBreachNotice(option, quote));
         }
 
         private bool BarrierIsBreached(CommodityBarrierOption option, FuturesQuote quote)
@@ -59,24 +59,25 @@
             return option.Barrier.Level < quote.High;
         }
 
-        private BarrierEvent CreateNotice(CommodityBarrierOption option, QuoteWithContract quote)
-        {
-            return new BarrierEvent {Option = option, Quote = quote};
-        }
-
         private readonly ConcurrentDictionary<CommodityBarrierOption, CommodityBarrierOption> _NotifiedTrades = new ConcurrentDictionary<CommodityBarrierOption, CommodityBarrierOption>();
 
-        private bool NoticeNotAlreadySent(BarrierEvent barrierEvent)
+        private bool NoticeNotAlreadySent(BarrierBreachNotice notice)
         {
-            return _NotifiedTrades.TryAdd(barrierEvent.Option, barrierEvent.Option);
+            return _NotifiedTrades.TryAdd(notice.Option, notice.Option);
         }
 
-        private void NotifyTheHumans(BarrierEvent barrierEvent)
+        private void NotifyTheHumans(BarrierBreachNotice notice)
         {
         }
 
-        public class BarrierEvent
+        public class BarrierBreachNotice
         {
+            public BarrierBreachNotice(CommodityBarrierOption option, QuoteWithContract quote)
+            {
+                Option = option;
+                Quote = quote;
+            }
+
             public CommodityBarrierOption Option { get; set; }
             public QuoteWithContract Quote { get; set; }
         }
