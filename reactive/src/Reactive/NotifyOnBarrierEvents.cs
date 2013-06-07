@@ -1,6 +1,5 @@
 ﻿namespace Reactive
 {
-    using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
@@ -23,7 +22,7 @@
 
         private void OnQuote(object sender, FuturesQuote quote)
         {
-            var contract = ContractFromQuote(quote);
+            var contract = NotifyOnBarrierEventsReactive.QuoteWithContract.ContractFromQuote(quote);
             if (IsValidContract(contract))
             {
                 return;
@@ -43,43 +42,6 @@
         private static bool IsValidContract(CommodityContract contract)
         {
             return contract == null;
-        }
-
-        public static IDictionary<string, int> Months = new Dictionary<string, int>
-            {
-                {"F", 1},
-                {"G", 2},
-                {"H", 3},
-                {"J", 4},
-                {"K", 5},
-                {"M", 6},
-                {"N", 7},
-                {"Q", 8},
-                {"U", 9},
-                {"V", 10},
-                {"X", 11},
-                {"Z", 12}
-            };
-
-        public static CommodityContract ContractFromQuote(FuturesQuote quote)
-        {
-            try
-            {
-                var year = quote.Symbol.Substring(quote.Symbol.Length - 4);
-                var monthCode = quote.Symbol.Substring(quote.Symbol.Length - 5, 1);
-                var productCode = quote.Symbol.Substring(0, quote.Symbol.Length - 5);
-                return new CommodityContract
-                    {
-                        ContractYear = Convert.ToInt32(year),
-                        ContractMonth = Months[monthCode],
-                        ProductCode = productCode
-                    };
-            }
-            catch
-            {
-                // note of course logging or w/e to notify
-                return null;
-            }
         }
 
         private bool BarrierIsBreached(CommodityBarrierOption option, FuturesQuote quote)

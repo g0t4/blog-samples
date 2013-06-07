@@ -13,7 +13,7 @@
                     Symbol = "CZ2013"
                 };
 
-            var commodityContract = NotifyOnBarrierEvents.ContractFromQuote(quote);
+            var commodityContract = NotifyOnBarrierEventsReactive.QuoteWithContract.ContractFromQuote(quote);
 
             commodityContract.ContractMonth.Should().Be(12);
             commodityContract.ContractYear.Should().Be(2013);

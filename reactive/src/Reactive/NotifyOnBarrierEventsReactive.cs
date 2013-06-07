@@ -111,15 +111,23 @@
 
             public static CommodityContract ContractFromQuote(FuturesQuote quote)
             {
-                var year = quote.Symbol.Substring(quote.Symbol.Length - 4);
-                var monthCode = quote.Symbol.Substring(quote.Symbol.Length - 5, 1);
-                var productCode = quote.Symbol.Substring(0, quote.Symbol.Length - 5);
-                return new CommodityContract
+                try
+                {
+                    var year = quote.Symbol.Substring(quote.Symbol.Length - 4);
+                    var monthCode = quote.Symbol.Substring(quote.Symbol.Length - 5, 1);
+                    var productCode = quote.Symbol.Substring(0, quote.Symbol.Length - 5);
+                    return new CommodityContract
                     {
                         ContractYear = Convert.ToInt32(year),
                         ContractMonth = Months[monthCode],
                         ProductCode = productCode
                     };
+                }
+                catch
+                {
+                    // note of course logging or w/e to notify
+                    return null;
+                }
             }
         }
     }
