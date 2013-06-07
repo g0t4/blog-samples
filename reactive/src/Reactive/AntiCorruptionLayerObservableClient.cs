@@ -21,7 +21,8 @@
         public AntiCorruptionLayerObservableClient(IObservable<FuturesQuote> quotes)
         {
             Quotes = quotes
-                .Select(q => new NotifyOnBarrierEventsReactive.QuoteWithContract(q));
+                .Select(q => new NotifyOnBarrierEventsReactive.QuoteWithContract(q))
+                .Where(NotifyOnBarrierEventsReactive.IsValidContract);
         }
 
         public IObservable<NotifyOnBarrierEventsReactive.QuoteWithContract> Quotes { get; private set; }

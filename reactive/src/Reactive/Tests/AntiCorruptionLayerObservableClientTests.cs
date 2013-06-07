@@ -1,6 +1,7 @@
 ﻿namespace Reactive.Tests
 {
     using System.Linq;
+    using FluentAssertions;
     using Microsoft.Reactive.Testing;
     using NUnit.Framework;
 
@@ -8,7 +9,7 @@
     public class AntiCorruptionLayerObservableClientTests : AssertionHelper
     {
         [Test]
-        public void OnFuturesQuote_AValidContractOnAFuturesQuote_TriggersQuoteWithContract()
+        public void OnFuturesQuote_WithAValidContract_StreamsQuoteWithContract()
         {
             var validFuturesQuote = new FuturesQuote
                 {
@@ -21,7 +22,23 @@
             var result = scheduler.Start(() => quotesWithContractClient.Quotes);
 
             var quoteWithContract = result.Messages.Single().Value.Value;
-            Expect(quoteWithContract.Quote, Is.EqualTo(validFuturesQuote));
+            quoteWithContract.Quote.ShouldBeEquivalentTo(validFuturesQuote);
+        }
+
+        [Test]
+        public void OnFuturesQuote_WithAnInvalidContract_StreamsNothing()
+        {
+            var validFuturesQuote = new FuturesQuote
+                {
+                    Symbol = "invalidcontract"
+                };
+            var scheduler = new TestScheduler();
+            var quotes = scheduler.CreateColdObservable(ReactiveTest.OnNext(0, validFuturesQuote));
+            var quotesWithContractClient = new AntiCorruptionLayerObservableClient(quotes);
+
+            var result = scheduler.Start(() => quotesWithContractClient.Quotes);
+
+            result.Messages.Should().BeEmpty();
         }
     }
 }

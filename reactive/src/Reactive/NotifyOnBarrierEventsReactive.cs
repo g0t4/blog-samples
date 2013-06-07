@@ -33,7 +33,7 @@
                 .Subscribe(NotifyTheHumans);
         }
 
-        private static bool IsValidContract(QuoteWithContract quote)
+        public static bool IsValidContract(QuoteWithContract quote)
         {
             return quote.Contract != null;
         }

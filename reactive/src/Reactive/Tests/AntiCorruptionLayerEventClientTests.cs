@@ -1,5 +1,6 @@
 ﻿namespace Reactive.Tests
 {
+    using FluentAssertions;
     using NUnit.Framework;
     using Rhino.Mocks;
 
@@ -20,7 +21,7 @@
 
             futuresQuoteClient.Raise(c => c.Quotes += null, null, validFuturesQuote);
 
-            Expect(quote.Quote, Is.EqualTo(validFuturesQuote));
+            quote.Quote.ShouldBeEquivalentTo(validFuturesQuote);
         }
     }
 }
