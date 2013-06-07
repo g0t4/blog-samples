@@ -2,9 +2,9 @@
 {
     public class FuturesQuoteClient
     {
-        public delegate void QuoteHanlder(object sender, FuturesQuote quote);
+        public delegate void QuoteHandler(object sender, FuturesQuote quote);
 
-        public event QuoteHanlder Quotes;
+        public event QuoteHandler Quotes;
 
         protected virtual void OnQuote(FuturesQuote quote)
         {

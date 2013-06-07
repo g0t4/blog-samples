@@ -18,7 +18,7 @@
         private static IObservable<FuturesQuote> FuturesQuotesSource(FuturesQuoteClient client)
         {
             return Observable
-                .FromEvent<FuturesQuoteClient.QuoteHanlder, FuturesQuote>(h => client.Quotes += h, h => client.Quotes -= h);
+                .FromEvent<FuturesQuoteClient.QuoteHandler, FuturesQuote>(h => client.Quotes += h, h => client.Quotes -= h);
         }
 
         public void Run()

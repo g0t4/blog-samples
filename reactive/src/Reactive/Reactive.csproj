@@ -42,6 +42,9 @@
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="Rhino.Mocks">
+      <HintPath>..\packages\RhinoMocks.3.6.1\lib\net\Rhino.Mocks.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
@@ -64,6 +67,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AntiCorruptionLayerEventClient.cs" />
+    <Compile Include="AntiCorruptionLayerObservableClient.cs" />
     <Compile Include="Barrier.cs" />
     <Compile Include="BarrierBehavior.cs" />
     <Compile Include="BarrierDirection.cs" />
@@ -73,6 +78,8 @@
     <Compile Include="FuturesQuoteClient.cs" />
     <Compile Include="NotifyOnBarrierEvents.cs" />
     <Compile Include="NotifyOnBarrierEventsReactive.cs" />
+    <Compile Include="Tests\AntiCorruptionLayerEventClientTests.cs" />
+    <Compile Include="Tests\AntiCorruptionLayerObservableClientTests.cs" />
     <Compile Include="Tests\CommodityContractTests.cs" />
   </ItemGroup>
   <ItemGroup>
