@@ -21,6 +21,7 @@
 
             var result = scheduler.Start(() => quotesWithContractClient.Quotes);
 
+            result.Messages.Should().HaveCount(1);
             var quoteWithContract = result.Messages.Single().Value.Value;
             quoteWithContract.Quote.ShouldBeEquivalentTo(validFuturesQuote);
         }

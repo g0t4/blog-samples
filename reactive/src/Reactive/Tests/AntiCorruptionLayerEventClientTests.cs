@@ -1,5 +1,7 @@
 ﻿namespace Reactive.Tests
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using FluentAssertions;
     using NUnit.Framework;
     using Rhino.Mocks;
@@ -16,12 +18,14 @@
                 };
             var futuresQuoteClient = MockRepository.GenerateStub<IFuturesQuoteClient>();
             var quotesWithContractClient = new AntiCorruptionLayerEventClient(futuresQuoteClient);
-            NotifyOnBarrierEventsReactive.QuoteWithContract quote = null;
-            quotesWithContractClient.Quotes += (sender, quoteWithContract) => quote = quoteWithContract;
+            var quotes = new List<NotifyOnBarrierEventsReactive.QuoteWithContract>();
+            quotesWithContractClient.Quotes += (sender, quote) => quotes.Add(quote);
 
             futuresQuoteClient.Raise(c => c.Quotes += null, null, validFuturesQuote);
 
-            quote.Quote.ShouldBeEquivalentTo(validFuturesQuote);
+            quotes.Should().HaveCount(1);
+            var quoteWithContract = quotes.Single();
+            quoteWithContract.Quote.ShouldBeEquivalentTo(validFuturesQuote);
         }
     }
 }
