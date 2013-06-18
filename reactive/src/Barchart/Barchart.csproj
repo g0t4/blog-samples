@@ -41,8 +41,18 @@
     <Reference Include="ddfplus">
       <HintPath>..\ddfplus\ddfplus.dll</HintPath>
     </Reference>
+    <Reference Include="FluentAssertions">
+      <HintPath>..\packages\FluentAssertions.2.0.1\lib\net45\FluentAssertions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Reactive.Testing">
+      <HintPath>..\packages\Rx-Testing.2.1.30214.0\lib\Net45-Full\Microsoft.Reactive.Testing.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="ReflectionMagic">
+      <HintPath>..\packages\ReflectionMagic.2.0.0\lib\net40\ReflectionMagic.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -67,7 +77,11 @@
   <ItemGroup>
     <Compile Include="ddfplusQuoteSource.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="ParsedDdfQuote.cs" />
+    <Compile Include="ParsedDdfQuoteExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tests\ddfplusQuoteSourceTests.cs" />
+    <Compile Include="Tests\ParsedDdfQuoteTests.cs" />
     <Compile Include="Tests\Runner.cs" />
   </ItemGroup>
   <ItemGroup>

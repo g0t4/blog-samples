@@ -2,7 +2,6 @@
 {
     using System;
     using System.Diagnostics;
-    using ddfplus;
 
     public class Runner
     {
@@ -12,7 +11,9 @@
             Trace.Listeners.Add(new ConsoleTraceListener());
 
             var source = new ddfplusQuoteSource();
-            source.QuoteStream.Subscribe(PrintQuote);
+            source.QuoteStream
+                  .ExcludeUninitializedQuotes()
+                  .Subscribe(PrintQuote);
 
             // note we are subscribing to CME Globex Corn futures, ZC is the symbol, ^F means all futures contracts
             // see this link for more information about CME Globex Corn futures http://www.cmegroup.com/trading/agricultural/grain-and-oilseed/corn_contract_specifications.html
@@ -24,10 +25,9 @@
             source.Stop();
         }
 
-        private static void PrintQuote(Quote quote)
+        private static void PrintQuote(ParsedDdfQuote quote)
         {
-            var currentSession = quote.Sessions["combined"];
-            Console.WriteLine(new {quote.Symbol, currentSession.Day, currentSession.Timestamp, currentSession.High, currentSession.Low});
+            Console.WriteLine(new {quote.Symbol, quote.High, quote.Low});
         }
     }
 }

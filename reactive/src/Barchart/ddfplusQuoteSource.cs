@@ -8,7 +8,7 @@
     public class ddfplusQuoteSource
     {
         private readonly Client _Client;
-        public readonly IObservable<Quote> QuoteStream;
+        public readonly IObservable<ParsedDdfQuote> QuoteStream;
 
         public ddfplusQuoteSource()
         {
@@ -17,11 +17,12 @@
             SetupConnection();
         }
 
-        private static IObservable<Quote> CreateQuoteStream(Client client)
+        private static IObservable<ParsedDdfQuote> CreateQuoteStream(Client client)
         {
             return Observable
                 .FromEventPattern<Client.NewQuoteEventHandler, Client.NewQuoteEventArgs>(h => client.NewQuote += h, h => client.NewQuote -= h)
-                .Select(e => e.EventArgs.Quote);
+                .Select(e => e.EventArgs.Quote)
+                .Select(q => new ParsedDdfQuote(q));
         }
 
         private void SetupConnection()
