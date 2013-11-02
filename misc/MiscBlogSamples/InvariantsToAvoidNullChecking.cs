@@ -12,20 +12,17 @@
 				public List<string> Names;
 			}
 
-			public void Creative()
+			public void ConsumerExamples()
 			{
+				// consumer creating a family
 				var family = new Family();
 				family.Names = new[] {"John", "Jane"}.ToList();
-			}
 
-			public void AddFamilyMember(Family family)
-			{
+				// consumer adding a name
 				family.Names = family.Names ?? new List<string>();
 				family.Names.Add("Baby");
-			}
 
-			public void CheckForFamilyMember(Family family)
-			{
+				// consumer searching names
 				var searchName = "Bob";
 				var hasSomeoneNamed = family.Names != null && family.Names.Contains(searchName);
 			}
@@ -43,19 +40,16 @@
 				}
 			}
 
-			public void Creative()
+			public void ConsumerExamples()
 			{
-				var names = new[] {"John", "Jane"};
+				// consumer creating a family
+				var names = new[] { "John", "Jane" };
 				var family = new Family(names);
-			}
 
-			public void AddFamilyMember(Family family)
-			{
+				// consumer adding a name
 				family.Names.Add("Baby");
-			}
 
-			public void CheckForFamilyMember(Family family)
-			{
+				// consumer searching names
 				var searchName = "Bob";
 				var hasSomeoneNamed = family.Names.Contains(searchName);
 			}
@@ -83,19 +77,16 @@
 				}
 			}
 
-			public void Creative()
+			public void ConsumerExamples()
 			{
-				var names = new[] {"John", "Jane"};
+				// consumer creating a family
+				var names = new[] { "John", "Jane" };
 				var family = new Family(names);
-			}
 
-			public void AddFamilyMember(Family family)
-			{
+				// consumer adding a name
 				family.AddName("Baby");
-			}
 
-			public void CheckForFamilyMember(Family family)
-			{
+				// consumer searching names
 				var searchName = "Bob";
 				var hasSomeoneNamed = family.HasSomeoneNamed(searchName);
 			}
